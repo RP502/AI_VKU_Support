@@ -1,6 +1,5 @@
 langchain~=0.3.7
 langchain-community~=0.3.5
-langchain-openai
 qdrant-client~=1.12.1
 pypdf
 langchain-qdrant
@@ -12,4 +11,4 @@ requests~=2.32.3
 protobuf~=5.28.3
 pytesseract~=0.3.13
 pillow~=10.4.0
-pandas~=2.2.3
+streamlit~=1.39.0
