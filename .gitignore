@@ -5,3 +5,4 @@ raft_state.json
 .idea
 __pycache__
 qdrant_storage
+.streamlit/secrets.toml

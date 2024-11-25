@@ -2,11 +2,35 @@ import streamlit as st
 from sentence_transformers import SentenceTransformer
 from langchain_qdrant import Qdrant
 from qdrant_client import QdrantClient
-from gemini import GeminiLLM
+# from gemini import GeminiLLM
 from langchain.embeddings import HuggingFaceBgeEmbeddings
+import google.generativeai as genai
 
+GOOGLE_API_KEY = st.secrets["GOOGLE_Key_3"]
+
+def configure_gemini():
+    try:
+        genai.configure(api_key=GOOGLE_API_KEY)
+        return genai.GenerativeModel('gemini-1.5-pro')
+    except Exception as e:
+        st.error(f"Failed to configure Gemini LLM: {e}")
+        return None
+
+class GeminiLLM:
+    def __init__(self):
+        self.model = configure_gemini()
+
+    def generate_response(self, prompt):
+        try:
+            if self.model:
+                response = self.model.generate_content(prompt)
+                return response.text
+            return ""
+        except Exception as e:
+            st.error(f"Error generating response: {e}")
+            return ""
 # Qdrant API configuration
-QDRANT_API_KEY = "jT8WAGH4ASjA-N7XqCK3c62JXgQk8NFL2nIXfYXwCT5s63HqYz1eGA"
+QDRANT_API_KEY = st.secrets["Qdrant_API_KEY"]
 QDRANT_URL = "https://0a664afe-b3d7-45ad-80e3-3af062055000.europe-west3-0.gcp.cloud.qdrant.io:6333"
 
 # Set up embeddings
@@ -60,8 +84,8 @@ Answer:
     return context, response
 
 # Streamlit UI
-st.set_page_config(page_title="Chatbot", layout="centered")
-st.title("Hỗ trợ tư vấn học vụ VKU")
+st.set_page_config(page_title="Trợ lý VKU", layout="centered")
+st.title("Hỗ trợ tư vấn")
 
 # Initialize chat history
 if "messages" not in st.session_state:
