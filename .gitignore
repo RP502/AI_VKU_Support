@@ -6,3 +6,4 @@ raft_state.json
 __pycache__
 qdrant_storage
 .streamlit/secrets.toml
+Vector_database.ipynb
