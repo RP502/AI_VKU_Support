@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-GOOGLE_API_KEY ="AIzaSyCA5iz97t1wgvIVi-EWfjmHYlnzR3ykYyo"
+GOOGLE_API_KEY =""
 # os.environ.get("GOOGLE_Key_2")
 
 class GeminiLLM:
