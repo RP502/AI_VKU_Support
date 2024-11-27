@@ -90,7 +90,7 @@ st.title("Hỗ trợ tư vấn")
 if "messages" not in st.session_state:
     st.session_state.messages = []
     st.session_state.messages.append(
-        {"role": "assistant", "content": "Xin chào! Tôi là trợ lý VKU. Bạn cần hỗ trợ gì hôm nay?"})
+        {"role": "assistant", "content": "Xin chào! Tôi là trợ lý VKU, giải đáp các thông tin học vụ và thông tin tuyển sinh. Bạn cần hỗ trợ gì hôm nay?"})
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
