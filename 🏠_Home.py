@@ -12,7 +12,7 @@ def get_base64_image(image_path):
         return None
 
 # Path to the robot image
-robot_img_path = "images/robot_image.png"
+robot_img_path = "images/ai_background.png"
 robot_img_base64 = get_base64_image(robot_img_path)
 
 # Streamlit UI Configuration
@@ -23,13 +23,16 @@ if robot_img_base64:  # Only render if the image is successfully loaded
     st.markdown(
         f"""
         <style>
+        *{{
+        background: #F5F5F7
+        }}
         .hero {{
             display: flex;
             align-items: center;
             justify-content: center;
             height: 80vh;
             max-height: 600px;
-            background: linear-gradient(to right, #ccDbf1, #bfdbfe);
+            background: linear-gradient(to right, #FFFFF, #FFFFF);
             border-radius: 15px;
             padding: 20px;
             margin: auto;
