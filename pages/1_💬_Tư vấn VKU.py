@@ -1,8 +1,6 @@
 import streamlit as st
-from sentence_transformers import SentenceTransformer
 from langchain_qdrant import Qdrant
 from qdrant_client import QdrantClient
-# from gemini import GeminiLLM
 from langchain.embeddings import HuggingFaceBgeEmbeddings
 import google.generativeai as genai
 

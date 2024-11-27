@@ -34,7 +34,10 @@ def send_mail(from_name, message, user_email):
 
 # Giao diện Streamlit
 st.set_page_config(page_title="Báo lỗi hoặc góp ý", layout="centered")
-st.title("📋 Báo lỗi hoặc góp ý")
+st.markdown(
+    "<h1 style='color: #df0218;'>📋 Báo lỗi hoặc góp ý</h1>",
+    unsafe_allow_html=True
+)
 st.markdown(
     """
     <div style="text-align: center;">
