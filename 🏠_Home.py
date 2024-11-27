@@ -37,6 +37,9 @@ if robot_img_base64:  # Only render if the image is successfully loaded
             margin: auto;
             width: 90%;
         }}
+          h1{{
+            padding: 1px
+        }}
         .hero-content {{
             text-align: center;
             max-width: 600px;
