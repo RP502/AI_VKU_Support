@@ -11,7 +11,7 @@ def get_base64_image(image_path):
         return None
 
 # Path to the robot image
-robot_img_path = "images/ai_background.png"
+robot_img_path = "images/VKUAI.png"
 robot_img_base64 = get_base64_image(robot_img_path)
 
 # Streamlit UI Configuration
