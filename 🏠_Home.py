@@ -1,5 +1,4 @@
 import streamlit as st
-from PIL import Image
 import base64
 
 # Function to encode image as Base64
@@ -79,13 +78,13 @@ if robot_img_base64:  # Only render if the image is successfully loaded
         <div class="hero">
             <div class="hero-content">
                 <img src="data:image/png;base64,{robot_img_base64}" alt="Robot Image"/>
-                <h1 class="text-2xl lg:text-5xl font-bold">Xin chào! Mình là</h1>
+                <h1 class="text-2xl lg:text-5xl font-bold" style="color: #df0218">Xin chào! Mình là</h1>
                 <h1 class="title-gradient">
                     <span class="v">V</span>
                     <span class="k">K</span>
                     <span class="u">U</span> Chatbot
                 </h1>
-                <p class="py-6 font-semibold lg:text-lg text-sm">
+                <p class="py-6 font-semibold lg:text-lg text-sm" style="color: #374f8a">
                     Giúp bạn giải đáp thắc mắc, tra cứu thông tin một cách nhanh chóng và chính xác nhất!
                 </p>
                 <a href="Tư_vấn_VKU" class="btn">Bắt đầu ngay</a>

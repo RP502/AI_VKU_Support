@@ -33,9 +33,10 @@ st.markdown(
         .faq-title {
             font-size: 2rem;
             font-weight: bold;
+          
             text-align: center;
             margin-bottom: 20px;
-            background: linear-gradient(90deg, teal, blue, purple);
+            background: #374f8a;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
