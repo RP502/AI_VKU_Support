@@ -27,7 +27,9 @@ st.set_page_config(page_title="FAQs", layout="centered")
 st.markdown(
     """
     <style>
-        
+        *{
+        background: #F5F5F7
+        }
         .faq-title {
             font-size: 2rem;
             font-weight: bold;

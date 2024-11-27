@@ -67,6 +67,9 @@ with st.form("feedback_form"):
 st.markdown(
     """
     <style>
+    *{
+        background: #F5F5F7
+        }
     .stButton>button {
         background: linear-gradient(to right, #4b7bec, #a29bfe);
         color: white;
