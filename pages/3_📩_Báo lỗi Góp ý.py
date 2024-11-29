@@ -9,9 +9,9 @@ def send_mail(from_name, message, user_email):
         # Cấu hình SMTP server (thay đổi theo dịch vụ email bạn dùng)
         smtp_server = "smtp.gmail.com"
         smtp_port = 587
-        sender_email = "your_email@gmail.com"  # Thay bằng email của bạn
-        sender_password = "your_password"     # Thay bằng mật khẩu ứng dụng
-        recipient_email = "recipient_email@gmail.com"  # Email nhận phản hồi
+        sender_email = "dinhvietphuong2602@gmail.com"  # Thay bằng email của bạn
+        sender_password = "olkp jghh qvfd ysqh"     # Thay bằng mật khẩu ứng dụng
+        recipient_email = "dinhvietphuong2602@gmail.com"  # Email nhận phản hồi
 
         # Tạo email
         msg = MIMEMultipart()
