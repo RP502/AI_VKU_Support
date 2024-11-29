@@ -3,7 +3,6 @@ from langchain_qdrant import Qdrant
 from qdrant_client import QdrantClient
 from langchain.embeddings import HuggingFaceBgeEmbeddings
 import google.generativeai as genai
-from sentence_transformers import SentenceTransformer
 
 GOOGLE_API_KEY = st.secrets["GOOGLE_Key_3"]
 # Qdrant API configuration
@@ -34,7 +33,7 @@ class GeminiLLM:
             return ""
 
 # Set up embeddings
-model_name = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
+model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 model_kwargs = {'device': 'cpu'}
 
 embeddings = HuggingFaceBgeEmbeddings(
