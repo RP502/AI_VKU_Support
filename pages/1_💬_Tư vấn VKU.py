@@ -34,7 +34,7 @@ class GeminiLLM:
             return ""
 
 # Set up embeddings
-model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+model_name = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
 model_kwargs = {'device': 'cpu'}
 
 embeddings = HuggingFaceBgeEmbeddings(

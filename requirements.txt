@@ -17,3 +17,4 @@ SQLAlchemy
 langchain-text-splitters
 langchain-core
 SpeechRecognition
+transformers
