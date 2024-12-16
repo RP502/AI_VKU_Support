@@ -11,7 +11,7 @@ def send_mail(from_name, message, user_email):
         smtp_port = 587
         sender_email = "dinhvietphuong2602@gmail.com"  # Thay bằng email của bạn
         sender_password = "olkp jghh qvfd ysqh"     # Thay bằng mật khẩu ứng dụng
-        recipient_email = "dinhvietphuong2602@gmail.com"  # Email nhận phản hồi
+        recipient_email = "phuongdv.21it@gmail.com"  # Email nhận phản hồi
 
         # Tạo email
         msg = MIMEMultipart()
