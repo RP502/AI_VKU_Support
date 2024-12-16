@@ -4,14 +4,26 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-GOOGLE_API_KEY =""
-# os.environ.get("GOOGLE_Key_2")
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+# Create the model
+generation_config = {
+  "temperature": 1,
+  "top_p": 0.95,
+  "top_k": 64,
+  "max_output_tokens": 8192,
+  "response_mime_type": "text/plain",
+}
 
-class GeminiLLM:
-    def __init__(self):
-        genai.configure(api_key=GOOGLE_API_KEY)
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
-    
-    def generate_response(self, prompt):
-        response = self.model.generate_content(prompt)
-        return response.text
+model = genai.GenerativeModel(
+  model_name="gemini-exp-1206",
+  generation_config=generation_config,
+)
+
+chat_session = model.start_chat(
+  history=[
+  ]
+)
+
+response = chat_session.send_message("INSERT_INPUT_HERE")
+
+print(response.text)
