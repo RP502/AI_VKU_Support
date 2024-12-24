@@ -30,7 +30,6 @@ class GeminiLLM:
             st.error(f"Lỗi khi tạo phản hồi: {e}")
             return "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại."
 
-
 model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 model_kwargs = {'device': 'cpu'}
 embeddings = HuggingFaceBgeEmbeddings(model_name=model_name, model_kwargs=model_kwargs)
@@ -43,34 +42,29 @@ gemini_llm = GeminiLLM()
 
 def hybrid_search(question, retriever):
     docs = retriever.get_relevant_documents(question)
+    # Prioritize documents that match keywords or phrases from the question
     keyword_hits = [doc for doc in docs if question.lower() in doc.page_content.lower()]
 
-    if not keyword_hits:
-        return docs
-    return keyword_hits
+    return keyword_hits if keyword_hits else docs
 
 def get_response(question, history):
     docs = hybrid_search(question, retriever)
 
     if not docs:
-        # Trả về thông tin mặc định khi không tìm thấy dữ liệu phù hợp
         response = (
-            "Câu hỏi này của bạn sẽ giải đáp được chi tiết hơn để giải đáp được thắc mắc.\n"
-            "Bạn có thể tham khảo thông tin tuyển sinh qua các kênh sau đây:\n"
+            "Câu hỏi của bạn sẽ được giải đáp tốt hơn qua các kênh sau:\n"
             "- Website: https://tuyensinh.vku.udn.vn/\n"
             "- Facebook: https://www.facebook.com/vku.udn.vn\n"
             "- Group: https://www.facebook.com/groups/vku.tuyensinh/\n"
-            "Hoặc liên hệ trực tiếp để được tư vấn\n"
-            "0236.6.552.688\n"
-            "0236.3.667.113\n"
+            "Hoặc liên hệ trực tiếp để được tư vấn qua các số:\n"
+            "0236.6.552.688 hoặc 0236.3.667.113.\n"
         )
         return "", response
 
     context = "\n".join([doc.page_content for doc in docs])
-
     history_text = "\n".join([f"User: {q}\nAssistant: {a}" for q, a in history])
     prompt = f"""
-    Bạn là trợ lý hỗ trợ tra cứu thông tin tuyển sinh và học vụ VKU. Hãy cung cấp câu trả lời chính xác và rõ ràng dựa trên câu hỏi của người dùng. Tuân thủ các quy tắc sau:
+    Bạn là trợ lý tư vấn của VKU. Hãy trả lời tự nhiên và dựa trên lịch sử hội thoại. Tuân thủ các hướng dẫn sau:
 
     1. Nếu người dùng hỏi về:
     - Chỉ tiêu tuyển sinh/ xét tuyển VKU năm 2024: Trả về 1500 chỉ tiêu
@@ -140,40 +134,80 @@ def get_response(question, history):
     - Mã ĐKXT: 7320106DA  
     - Chỉ tiêu: 40  
 
-    - Hoãn nghĩa vụ quân sự: Trả về đường link https://s.net.vn/pv84 kèm giải thích rằng đây là mẫu đơn xác nhận sinh viên của trường.
-    - Bảng điểm học tập: Trả về đường link https://s.net.vn/FHEO.
-    - Các mẫu đơn, tài liệu, biểu mẫu của trường: Trả về đường link https://portal.vku.udn.vn/tai-nguyen.
+    - **Hoãn nghĩa vụ quân sự**: Trả về đường link https://s.net.vn/pv84 và giải thích đây là mẫu đơn xác nhận sinh viên của trường.
+- **Bảng điểm học tập**: Trả về đường link https://s.net.vn/FHEO.
+- **Mẫu đơn, tài liệu, biểu mẫu của trường**: Trả về đường link https://portal.vku.udn.vn/tai-nguyen.
+- **Thư viện số, đề cương - bài giảng, giáo trình, tài liệu ôn tập thi cử**: Trả về đường link https://elib.vku.udn.vn/.
+- **Nếu hỏi về điểm các năm trước**: Hãy trả về Điểm trúng tuyển của 2 năm gần nhất các ngành tương ứng của tất cả các phương thức xét tuyển(Xét tuyển theo kết quả học tập THPT (xét học bạ),Xét tuyển theo kết quả thi ĐGNL của ĐH QG TP HCM, Xét tuyển theo kết quả thi TN THP)
+    2.  Kênh tham khảo nếu không trả lời được:
+- **Câu hỏi về tuyển sinh**:
+       - Website tuyển sinh: https://tuyensinh.vku.udn.vn/
+       - Facebook: https://www.facebook.com/vku.udn.vn
+       - Group: https://www.facebook.com/groups/vku.tuyensinh/
+       - Hoặc đề xuất liên hệ trực tiếp qua số điện thoại:
+           + 0236.6.552.688
+           + 0236.3.667.113
+- **Câu hỏi về tư vấn học vụ**:
+       - Facebook: https://www.facebook.com/ctsv.vku.udn.vn
+       - Hoặc đề xuất liên hệ trực tiếp qua số điện thoại:
+           + 0236 3667 129
+- **Câu hỏi về chương trình đào tạo**:
+       - Facebook: https://www.facebook.com/daotao.vku.udn.vn
+       - Hoặc đề xuất liên hệ trực tiếp qua số điện thoại:
+           + 0236 3667 113
+- **Câu hỏi về tài chính học phí**:
+       - Facebook: https://www.facebook.com/ctsv.vku.udn.vn
+       - Email: kehoachtaichinh@vku.udn.vn
+       - Hoặc đề xuất liên hệ trực tiếp qua số điện thoại:
+           +  0236.3.667.114
+     
+    3. Thông tin bổ sung khi người dùng so sánh:
+Đưa ra so sánh ưu và nhược điểm của các trường và kèm thêm những ưu điểm sau của VKU:
+- **Học phí VKU**: 14 - 16 triệu đồng/năm.
+- **Đặc điểm nổi bật của VKU**: Trường năng động, chuyên sâu các lĩnh vực công nghệ thông tin, truyền thông và kinh tế số.
+- **Tỉ lệ việc làm sau tốt nghiệp**:
+   - Quản trị kinh doanh: 94.1%
+   - Công nghệ kỹ thuật máy tính: 100%
+   - Công nghệ thông tin: 94.44%       
+     4. Quy tắc trả lời:
+- **Đảm bảo tính chính xác**: Cung cấp thông tin đúng và cập nhật nhất.
+- **Đúng ngôn ngữ**: Trả lời bằng ngôn ngữ phù hợp với người dùng.
+- **Ngắn gọn, dễ hiểu**: Trình bày câu trả lời rõ ràng và súc tích.
+- **Giọng điệu thân thiện**: Duy trì sự chuyên nghiệp và thân thiện trong giao tiếp.
+- **Hiểu rõ nhu cầu**: Đặt câu hỏi phù hợp để làm rõ yêu cầu của người dùng.
+- **Hướng dẫn chi tiết**: Cung cấp các bước cụ thể khi hướng dẫn đăng ký xét tuyển hoặc thao tác liên quan.
+- **Xử lý trường hợp không trả lời được**:
+   - **Câu hỏi tuyển sinh**: 
+     - Đề xuất truy cập:
+       - Website: [https://tuyensinh.vku.udn.vn](https://tuyensinh.vku.udn.vn)
+       - Facebook Group: [https://www.facebook.com/groups/vku.tuyensinh/](https://www.facebook.com/groups/vku.tuyensinh/)
+     - Hoặc liên hệ bộ phận tuyển sinh qua số điện thoại: 0236.6.552.688 hoặc 0236.3.667.113.
+   - **Câu hỏi học vụ**: 
+     - Đề xuất truy cập:
+       - Facebook: [https://www.facebook.com/ctsv.vku.udn.vn](https://www.facebook.com/ctsv.vku.udn.vn)
+     - Hoặc liên hệ bộ phận công tác sinh viên qua số điện thoại: 0236 3667 129.
+   - **Câu hỏi đào tạo**: 
+     - Đề xuất truy cập:
+       - Facebook: [https://www.facebook.com/daotao.vku.udn.vn](https://www.facebook.com/daotao.vku.udn.vn)
+     - Hoặc liên hệ qua phòng đào tạo số điện thoại: 0236 3667 113.
+   - **Câu hỏi học vụ**: 
+     - Đề xuất truy cập:
+       - Facebook: [https://www.facebook.com/ctsv.vku.udn.vn](https://www.facebook.com/ctsv.vku.udn.vn)
+     - Hoặc liên hệ bộ phận kế hoạch tài chính qua số điện thoại: 0236.3.667.114.
+    Lịch sử hội thoại:
+    {history_text}
 
-    2. Nếu câu hỏi không thuộc các danh mục trên, hãy trả về các kênh tham khảo sau:
-    - Website tuyển sinh: https://tuyensinh.vku.udn.vn/
-    - Facebook: https://www.facebook.com/vku.udn.vn
-    - Group: https://www.facebook.com/groups/vku.tuyensinh/
-    - Hoặc đề xuất liên hệ trực tiếp qua số điện thoại:
-        + 0236.6.552.688
-        + 0236.3.667.113
+    Ngữ cảnh tài liệu liên quan:
+    {context}
 
-    3. Khi trả lời:
-        Thông tin phải chính xác và cập nhật
-        Giọng điệu thân thiện, chuyên nghiệp
-        Đưa ra câu hỏi phù hợp để hiểu rõ nhu cầu của người hỏi
-        Hướng dẫn cụ thể các bước đăng ký xét tuyển
-        Trong trường hợp không thể trả lời hoặc cần thông tin chi tiết hơn:
-        Dẫn người dùng đến trang tuyển sinh chính thức: https://tuyensinh.vku.udn.vn
-        Đề xuất liên hệ với bộ phận tuyển sinh của trường
+    Câu hỏi hiện tại:
+    {question}
 
-History:
-{history_text}
-
-Context:
-{context}
-
-Question:
-{question}
-
-Answer:
-"""
+    Phản hồi của bạn:
+    """
     response = gemini_llm.generate_response(prompt)
     return context, response
+
 
 st.set_page_config(page_title="Trợ lý VKU", layout="centered")
 st.title("Hỗ trợ tư vấn")
@@ -183,7 +217,6 @@ if "messages" not in st.session_state:
     st.session_state.messages.append(
         {"role": "assistant",
          "content": "Xin chào! Tôi là trợ lý VKU, giải đáp các thông tin học vụ và thông tin tuyển sinh. Bạn cần hỗ trợ gì hôm nay?"})
-
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -195,9 +228,8 @@ if prompt := st.chat_input("Hỏi trợ lý VKU"):
         st.markdown(prompt)
 
     with st.spinner("Đang xử lý..."):
-        _, response = get_response(prompt,
-                                   [(m["content"], m["content"]) for m in st.session_state.messages if
-                                    m["role"] == "user"])
+        context, response = get_response(prompt, [(m["content"], m["content"]) for m in st.session_state.messages if
+                                                  m["role"] == "user"])
 
     st.session_state.messages.append({"role": "assistant", "content": response})
 
