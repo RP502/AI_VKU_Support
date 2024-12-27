@@ -8,6 +8,7 @@ GOOGLE_API_KEY = st.secrets["GOOGLE_Key_3"]
 QDRANT_API_KEY = st.secrets["Qdrant_API_KEY"]
 QDRANT_URL = "https://0a664afe-b3d7-45ad-80e3-3af062055000.europe-west3-0.gcp.cloud.qdrant.io:6333"
 
+
 def configure_gemini():
     try:
         genai.configure(api_key=GOOGLE_API_KEY)
@@ -15,6 +16,7 @@ def configure_gemini():
     except Exception as e:
         st.error(f"Failed to configure Gemini LLM: {e}")
         return None
+
 
 class GeminiLLM:
     def __init__(self):
@@ -30,6 +32,7 @@ class GeminiLLM:
             st.error(f"Lỗi khi tạo phản hồi: {e}")
             return "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại."
 
+
 model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 model_kwargs = {'device': 'cpu'}
 embeddings = HuggingFaceBgeEmbeddings(model_name=model_name, model_kwargs=model_kwargs)
@@ -40,12 +43,14 @@ vectorstore = Qdrant(client=qdrant_client, collection_name="vku_data_all", embed
 retriever = vectorstore.as_retriever(search_kwargs={"k": 30})
 gemini_llm = GeminiLLM()
 
+
 def hybrid_search(question, retriever):
     docs = retriever.get_relevant_documents(question)
     # Prioritize documents that match keywords or phrases from the question
     keyword_hits = [doc for doc in docs if question.lower() in doc.page_content.lower()]
 
     return keyword_hits if keyword_hits else docs
+
 
 def get_response(question, history):
     docs = hybrid_search(question, retriever)
@@ -133,11 +138,11 @@ def get_response(question, history):
 16. **Công nghệ truyền thông - Chuyên ngành Thiết kế Mỹ thuật số (cử nhân)**  
     - Mã ĐKXT: 7320106DA  
     - Chỉ tiêu: 40  
-
-    - **Hoãn nghĩa vụ quân sự**: Trả về đường link https://s.net.vn/pv84 và giải thích đây là mẫu đơn xác nhận sinh viên của trường.
+    
+- **Mẫu đơn hoãn thi..., biểu mẫu, báo cáo của trường**: Trả về đường link https://portal.vku.udn.vn/tai-nguyen.
+- **Đơn hoãn nghĩa vụ quân sự và giấy xác nhận sinh viên**: Trả về đường link https://s.net.vn/pv84.
 - **Bảng điểm học tập**: Trả về đường link https://s.net.vn/FHEO.
-- **Mẫu đơn, tài liệu, biểu mẫu của trường**: Trả về đường link https://portal.vku.udn.vn/tai-nguyen.
-- **Thư viện số, đề cương - bài giảng, giáo trình, tài liệu ôn tập thi cử**: Trả về đường link https://elib.vku.udn.vn/.
+- **Thư viện số, bài giảng, giáo trình, tài liệu ôn tập thi cử**: Trả về đường link https://elib.vku.udn.vn/.
 - **Nếu hỏi về điểm các năm trước**: Hãy trả về Điểm trúng tuyển của 2 năm gần nhất các ngành tương ứng của tất cả các phương thức xét tuyển(Xét tuyển theo kết quả học tập THPT (xét học bạ),Xét tuyển theo kết quả thi ĐGNL của ĐH QG TP HCM, Xét tuyển theo kết quả thi TN THP)
     2.  Kênh tham khảo nếu không trả lời được:
 - **Câu hỏi về tuyển sinh**:
@@ -160,7 +165,7 @@ def get_response(question, history):
        - Email: kehoachtaichinh@vku.udn.vn
        - Hoặc đề xuất liên hệ trực tiếp qua số điện thoại:
            +  0236.3.667.114
-     
+
     3. Thông tin bổ sung khi người dùng so sánh:
 Đưa ra so sánh ưu và nhược điểm của các trường và kèm thêm những ưu điểm sau của VKU:
 - **Học phí VKU**: 14 - 16 triệu đồng/năm.
